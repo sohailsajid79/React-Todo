@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Header from "./Components/Header";
+import Form from "./Components/Form";
+import TodoList from "./Components/TodoList";
 
-function App() {
+const App = () => {
+  const initialState = JSON.parse(localStorage.getItem("todo")) || [];
+  const [description, setDescription] = useState(""); // input
+  const [todos, setTodos] = useState(initialState);
+  const [editTodo, SetEditTodo] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("todo", JSON.stringify(todos));
+  }, [todos]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className="app-wrapper">
+        <div>
+          <Header />
+        </div>
+        <div>
+          <Form
+            description={description}
+            setDescription={setDescription}
+            todos={todos}
+            setTodos={setTodos}
+            editTodo={editTodo}
+            SetEditTodo={SetEditTodo}
+          />
+        </div>
+        <div>
+          <TodoList
+            todos={todos}
+            setTodos={setTodos}
+            SetEditTodo={SetEditTodo}
+          />
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
